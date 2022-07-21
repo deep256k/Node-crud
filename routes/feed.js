@@ -13,6 +13,7 @@ router.get("/posts", isAuth, feedController.getPosts);
 router.post(
   "/post",
   isAuth,
+
   [
     body("title").trim().isLength({ min: 5 }),
     body("content").trim().isLength({ min: 5 }),
@@ -35,3 +36,5 @@ router.put(
 router.delete("/post/:postId", feedController.deletePost);
 
 module.exports = router;
+
+//Dummy text
