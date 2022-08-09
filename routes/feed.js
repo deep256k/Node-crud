@@ -13,10 +13,7 @@ router.get("/posts", isAuth, feedController.getPosts);
 router.post(
   "/post",
   isAuth,
-  [
-    body("title").trim().isLength({ min: 5 }),
-    body("content").trim().isLength({ min: 5 }),
-  ],
+  [(body("title"), body("content"))],
   feedController.createPost
 );
 
@@ -32,6 +29,6 @@ router.put(
   feedController.updatePost
 );
 
-router.delete("/post/:postId", feedController.deletePost);
+router.delete("/post/:postId", isAuth, feedController.deletePost);
 
 module.exports = router;

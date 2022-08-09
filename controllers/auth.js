@@ -24,7 +24,20 @@ exports.signup = (req, res, next) => {
       return user.save();
     })
     .then((result) => {
-      res.status(200).json({ message: "user Created", userId: result._id });
+      const token = jwt.sign(
+        {
+          email: email,
+          userId: result._id.toString(),
+        },
+        "somesecretKey",
+        { expiresIn: "1h" }
+      );
+      res.status(200).json({
+        message: "user Created",
+        userId: result._id,
+        token: token,
+        userName: name,
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -50,7 +63,7 @@ exports.login = (req, res, next) => {
     })
     .then((isEqual) => {
       if (!isEqual) {
-        const error = new Error("Password id not matching");
+        const error = new Error("Password is not matching");
         error.statusCode = 422;
         throw error;
       }
@@ -62,7 +75,11 @@ exports.login = (req, res, next) => {
         "somesecretKey",
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token: token, userId: loadUser._id.toString() });
+      res.status(200).json({
+        token: token,
+        userName: loadUser.name,
+        userId: loadUser._id.toString(),
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
