@@ -1,0 +1,7 @@
+{
+    "env":{
+        "MONGO_USERNAME":"Deepak",
+        "MONGO_PASSWORD":"KYaNg6C1rz9cakCL",
+        "MONGO_DATABASE":"messages"
+    }
+}

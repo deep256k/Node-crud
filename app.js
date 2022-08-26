@@ -1,14 +1,15 @@
 const path = require("path");
 
 const express = require("express");
+const app = express();
+
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
-
+const helmet = require("helmet");
+app.use(helmet());
 const feedRoutes = require("./routes/feed");
 const authRoutes = require("./routes/auth");
-
-const app = express();
 
 // const fileStorage = multer.diskStorage({
 //   destination: (req, file, cb) => {
@@ -61,9 +62,9 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://Deepak:KYaNg6C1rz9cakCL@cluster0.ecxkfvu.mongodb.net/messages?retryWrites=true&w=majority"
+    `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.ecxkfvu.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`
   )
   .then((result) => {
-    app.listen(8080);
+    app.listen(process.env.PORT || 8080);
   })
   .catch((err) => console.log(err));
